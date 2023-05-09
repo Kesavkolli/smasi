@@ -1,0 +1,43 @@
+{
+  "displayName": "sample extension",
+  "name": "sample-extension",
+  "platform": "web",
+  "version": "1.0.0",
+  "description": "short note",
+  "author": {
+    "name": "pavan"
+  },
+  "viewBasePath": "src/view/",
+  "configuration": {
+    "viewPath": "configuration/configuration.html",
+    "schema": {
+      "$schema": "http://json-schema.org/draft-04/schema#",
+      "type": "object",
+      "properties": {}
+    }
+  },
+  "actions": [
+    {
+      "displayName": "action",
+      "name": "action",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "properties": {}
+      },
+      "libPath": "src/lib/actions/action.js",
+      "viewPath": "actions/action.html"
+    },
+    {
+      "displayName": "Make Fetch Call",
+      "name": "make-fetch-call",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "properties": {}
+      },
+      "libPath": "src/lib/actions/makeFetchCall.js",
+      "viewPath": "actions/makeFetchCall.html"
+    }
+  ]
+}
