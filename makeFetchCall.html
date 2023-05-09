@@ -1,0 +1,659 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Action</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <style>
+    .request {
+      font-weight: bold;
+    }
+
+    .first-div {
+      width: 25.5%;
+      display: flex;
+      justify-content: space-between;
+      line-height: 0px;
+    }
+
+    .first-div p {
+      color: #747474;
+    }
+
+    .input-div {
+      width: 34%;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .input-div #fetch {
+      width: 172px;
+      height: 30px;
+    }
+
+    #url {
+      width: 202%;
+      height: 25px;
+    }
+
+    .input-div option {
+      color: #747474;
+    }
+
+    .input-div select {
+      color: #747474;
+
+    }
+
+    .url-field p {
+      line-height: 1px;
+    }
+
+    .fetch_list ul {
+
+      padding: 0;
+
+      display: flex;
+      list-style-type: none;
+
+    }
+
+    .key_value form {
+
+      display: flex;
+
+    }
+
+    .key_value_button {
+
+      border-radius: 20px;
+
+      font-weight: bold;
+
+      padding: 5px 14px 5px;
+
+      margin-top: 12px;
+
+      border: 2px solid #505050;
+
+      background-color: #ffffff;
+
+    }
+
+    .key_value_button:hover {
+
+      background-color: #505050;
+
+      cursor: pointer;
+
+      color: white;
+
+    }
+
+    #vehicle1 {
+
+      margin: 0%;
+
+    }
+
+    .Response input {
+
+      vertical-align: text-top;
+
+    }
+
+    .Response i {
+
+      color: white;
+
+      background-color: #747474;
+
+    }
+
+    .info {
+
+      position: absolute;
+
+      bottom: 35%;
+
+      left: 16%;
+
+      border-radius: 4px;
+
+      font-size: 14px;
+
+      background-color: #747474;
+
+      color: white;
+
+      padding: 20px;
+
+      display: none;
+
+      height: 165px;
+
+      width: 127px;
+
+    }
+
+    .Response i:hover+.info {
+
+      display: block;
+
+    }
+
+    .fetch_list ul li {
+      padding: 10px;
+
+    }
+
+    .list-1 {
+      border-bottom: 2px solid black;
+
+    }
+
+
+
+    .fa {
+
+      /* font-size: 18px; */
+
+      /* color: rgb(84, 69, 69); */
+
+      /* border-style: solid; */
+
+      border-radius: 10px;
+
+      /* border-width: thin; */
+
+      /* width: 25px; */
+
+      font-size: 14px;
+
+      font-weight: 400;
+
+      /* height: 33px; */
+
+      padding-top: 6px;
+
+      padding: 5px;
+
+      vertical-align: middle;
+
+    }
+
+    .key-token {
+
+      padding-right: 15px;
+      padding-bottom: 20px;
+
+    }
+
+    .Response {
+
+      display: none;
+
+    }
+
+    input[type=checkbox] {
+
+      cursor: pointer;
+
+    }
+
+    input[type=checkbox]:hover+.Response {
+
+      display: block;
+
+    }
+
+    .fetch_list ul li {
+
+      padding: 10px;
+
+    }
+
+    .list-1 {
+
+      border-bottom: 2px solid black;
+
+    }
+
+    .key {
+
+      display: flex;
+
+      gap: 6px;
+
+    }
+
+    .pixel {
+
+      width: 30em;
+
+      height: 30px;
+
+      border-radius: 4px;
+
+      border: 1px solid #929292;
+
+    }
+
+
+
+
+    #token {
+
+      width: 30em;
+
+      height: 30px;
+
+      border-radius: 4px;
+
+      border: 1px solid #929292;
+
+      /* border-radius: 10px; */
+
+    }
+
+    .main_queryparam {
+      display: none;
+    }
+
+    .button-ui {
+      display: none;
+    }
+
+    .button-ui.active {
+      display: block;
+    }
+
+    .fetch_list ul button {
+      cursor: pointer;
+      border: none;
+      color: black;
+      background-color: transparent;
+      padding-bottom: 14px;
+    }
+
+    .fetch_list ul button:hover {
+      border-bottom: 1px solid black;
+    }
+  </style>
+
+</head>
+
+<body>
+  <p class="request">Request</p>
+  <div class="first-div">
+    <p>Method(required)</p>
+    <p>Url(required)</p>
+  </div>
+  <div class="input-div">
+    <div>
+      <select name="fetch" id="fetch">
+        <option value="GET" style="color:#747474">GET</option>
+        <option value="POST">POST</option>
+        <option value="PUT">PUT</option>
+        <option value="PATCH">PATCH</option>
+        <option value="DELETE">DELETE</option>
+      </select>
+    </div>
+    <div class="url-field">
+      <input id="url" type="text" placeholder="Enter URL (eg. http://example.com/path?q=true)" onblur="checkEmpty()">
+      <p id="warning" style="display: none; color: red;">Please provide a valid url</p>
+    </div>
+  </div>
+  <div class="fetch_list">
+    <ul>
+      <li class="queryparams"><button id="queryparam">Query Params</button></li>
+      <li class="headers"><button id="header">Headers</button></li>
+      <li class="body"><button id="body">Body</button></li>
+    </ul>
+    <div class="button-ui" id="queryparam-ui">
+      <h4>Query Params</h4>
+      <div class="key_value">
+        <form id="input-field">
+          <div class="key-token">
+            <label for="pixel-id">
+              <p style="font-size: 12px;">KEY</p>
+            </label>
+            <div class="key">
+              <div>
+                <input type="text" class="pixel" name="fname" onblur="checkEmpty()">
+              </div>
+              <button id="show"><i class="fa">&#xf1c0;</i></button>
+            </div>
+          </div>
+          <div>
+            <label for="token">
+              <p style="font-size: 12px;">VALUE</p>
+            </label>
+            <div class="key">
+              <div>
+                <input type="text" id="token" name="lname" onblur="checkEmpty2()">
+              </div>
+              <button id="secretshow"><i class="fa">&#xf1c0;</i></button>
+            </div>
+          </div>
+        </form>
+        <!-- <form action="">
+          <div class="key-token">
+
+            <div class="key">
+              <div>
+                <input type="text" id="pixel" name="fname" onblur="checkEmpty()">
+              </div>
+              <button id="show"><i class="fa">&#xf1c0;</i></button>
+            </div>
+          </div>
+          <div>
+
+            <div class="key">
+              <div>
+                <input type="text" id="token" name="lname" onblur="checkEmpty2()">
+              </div>
+              <button id="secretshow"><i class="fa">&#xf1c0;</i></button>
+            </div>
+          </div>
+        </form> -->
+        
+        
+        <div id="container">
+          <!-- <button class="key_value_button" onclick="addInput()">+ Add Another</button> -->
+          <!-- <button onclick="addInput()">Add Input Field</button> -->
+          <button onclick="removeInput()">Remove Input Field</button>
+        </div>
+        
+        <button class="key_value_button" onclick="addInput()">+ Add Another</button>
+
+        <h4>Advanced</h4>
+        <input type="checkbox" id="myCheck" onclick="myFunction()">
+        <label for="myCheck">Save the request response</label>
+
+        <!-- <p id="text" style="display:none">Checkbox is CHECKED!</p> -->
+        <div id="text" style="display:none" class="Response">
+          <label for="vehicle1" style="line-height: 37px;
+          font-size: medium;"> Response key</label><br>
+          <input type="text" id="Response key" name="Response key">
+          <i class="fa fa-info"></i>
+          <div class="info">The request result will be added to the "ruleStash" that is sent to the next actions from
+            the
+            rule. It will be accessible at the following path: "arc.ruleStash.ado be-cloud-connector.respons
+            es.rs_response01"
+          </div>
+        </div>
+        <!-- <input type="checkbox" id="cle1" name="Response" value="Response">
+        <label for="vehicle1"> Save the request response</label>
+        <div class="Response">
+          <label for="vehicle1"> Response key</label><br>
+          <input type="text" id="Response key" name="Response key">
+          <i class="fa fa-info"></i>
+          <div class="info">The request result will be added to the "ruleStash" that is sent to the next actions from
+            the
+            rule. It will be accessible at the following path: "arc.ruleStash.ado be-cloud-connector.respons
+            es.rs_response01"</div>
+        </div> -->
+        <!-- </div> -->
+
+      </div>
+      <div class="button-ui" id="header-ui">
+        <h4>Headers</h4>
+        <form style="display: flex;">
+          <div class="key-token">
+            <label for="pixel-id">
+              <p style="font-size: 12px;">KEY</p>
+            </label>
+            <div class="key">
+              <div>
+                <input type="text" id="pixel" name="fname" onblur="checkEmpty()">
+              </div>
+              <button id="show"><i class="fa">&#xf1c0;</i></button>
+            </div>
+          </div>
+          <div>
+            <label for="token">
+              <p style="font-size: 12px;">VALUE</p>
+            </label>
+            <div class="key">
+              <div>
+                <input type="text" id="token" name="lname" onblur="checkEmpty2()">
+              </div>
+              <button id="secretshow"><i class="fa">&#xf1c0;</i></button>
+            </div>
+          </div>
+        </form>
+        <button class="key_value_button">+ Add Another</button>
+        <h4>Advanced</h4>
+        <label for="myCheck">Checkbox:</label>
+        <input type="checkbox" id="myCheck" onclick="myFunction()">
+        <p id="text" style="display:none">Checkbox is CHECKED!</p>
+
+
+        <!-- <input type="checkbox" id="cle1" name="Response" value="Response">
+      <label for="vehicle1"> Save the request response</label>
+      <div class="Response">
+        <label for="vehicle1"> Response key</label><br>
+        <input type="text" id="Response key" name="Response key">
+        <i class="fa fa-info"></i>
+        <div class="info">The request result will be added to the "ruleStash" that is sent to the next actions from
+          the
+          rule. It will be accessible at the following path: "arc.ruleStash.ado be-cloud-connector.respons
+          es.rs_response01"
+        </div>
+      </div> -->
+
+      </div>
+      <div class="button-ui" id="body-ui">
+        <p>Body Format</p>
+        <input type="radio" checked=true id="Json" name="fav_language" value="Json">
+        <label for="html">Json</label>
+        <input type="radio" id="Raw" name="fav_language" value="Raw">
+        <label for="css">Raw</label>
+        <h4>Body(Json)</h4>
+        <div class="key_value">
+          <form>
+            <div class="key-token">
+              <label for="pixel-id">
+                <p style="font-size: 12px;">KEY</p>
+              </label>
+              <div class="key">
+                <div>
+                  <input type="text" class="pixel" name="fname" onblur="checkEmpty()">
+                </div>
+                <button id="show"><i class="fa">&#xf1c0;</i></button>
+              </div>
+            </div>
+            <div>
+              <label for="token">
+                <p style="font-size: 12px;">VALUE</p>
+              </label>
+              <div class="key">
+                <div>
+                  <input type="text" id="token" name="lname" onblur="checkEmpty2()">
+                </div>
+                <button id="secretshow"><i class="fa">&#xf1c0;</i></button>
+              </div>
+            </div>
+          </form>
+          <form action="">
+            <div class="key-token">
+              <div class="key">
+                <div>
+                  <input type="text" id="pixel" name="fname" onblur="checkEmpty()">
+                </div>
+                <button id="show"><i class="fa">&#xf1c0;</i></button>
+              </div>
+            </div>
+            <div>
+              <div class="key">
+                <div>
+                  <input type="text" id="token" name="lname" onblur="checkEmpty2()">
+                </div>
+                <button id="secretshow"><i class="fa">&#xf1c0;</i></button>
+              </div>
+            </div>
+          </form>
+          <button class="key_value_button">+ Add Another</button>
+          <h4>Advanced</h4>
+          <label for="myCheck">Checkbox:</label>
+          <input type="checkbox" id="myCheck" onclick="myFunction()">
+          <p id="text" style="display:none">Checkbox is CHECKED!</p>
+          <!-- <input type="checkbox" id="cle1" name="Response" value="Response">
+          <label for="vehicle1"> Save the request response</label>
+          <div class="Response">
+            <label for="vehicle1"> Response key</label><br>
+            <input type="text" id="Response key" name="Response key">
+            <i class="fa fa-info"></i>
+            <div class="info">The request result will be added to the "ruleStash" that is sent to the next actions from
+              the
+              rule. It will be accessible at the following path: "arc.ruleStash.ado be-cloud-connector.respons
+              es.rs_response01"</div> -->
+        </div>
+      </div>
+
+      <script src="https://assets.adobedtm.com/activation/reactor/extensionbridge/extensionbridge.min.js"></script>
+      <script>
+        function myFunction() {
+          var checkBox = document.getElementById("myCheck");
+          var text = document.getElementById("text");
+          if (checkBox.checked == true) {
+            text.style.display = "block";
+          } else {
+            text.style.display = "none";
+          }
+        }
+        fetch('https://reqres.in/api/users')
+          .then(response => response.json())
+          .then(data => console.log(data))
+          .catch(error => console.error(error));
+        function checkEmpty() {
+          const input = document.getElementById("url");
+          const warning = document.getElementById("warning");
+          if (input.value.trim() === "") {
+            warning.style.display = "block";
+            input.style.borderColor = "red";
+          } else {
+            warning.style.display = "none";
+            input.style.borderColor = "black";
+          }
+
+        }
+        window.extensionBridge.register({
+          init: function (info) {
+            if (info.settings) {
+              document.querySelector("#url").value = info.settings.url
+              // TODO Populate form values from persisted settings.
+            }
+          },
+
+          getSettings: function () {
+
+            return {
+              url: document.getElementById('url').value
+              // url:document.querySelector("#url").value
+            }
+            // TODO Return settings object from form values.
+          },
+
+          validate: function () {
+            return document.getElementById('url').value.length > 0;
+
+          }
+        });
+        var queryparam = document.getElementById("queryparam");
+        var header = document.getElementById("header");
+        var body = document.getElementById("body");
+        var button1UI = document.getElementById("queryparam-ui");
+        var button2UI = document.getElementById("header-ui");
+        var button3UI = document.getElementById("body-ui");
+
+
+
+        queryparam.addEventListener("click", function () {
+          button1UI.classList.add("active");
+          button2UI.classList.remove("active");
+          button3UI.classList.remove("active");
+        });
+
+
+
+        header.addEventListener("click", function () {
+          button1UI.classList.remove("active");
+          button2UI.classList.add("active");
+          button3UI.classList.remove("active");
+        });
+
+
+
+        body.addEventListener("click", function () {
+          button1UI.classList.remove("active");
+          button2UI.classList.remove("active");
+          button3UI.classList.add("active");
+        });
+
+        var inputvar = document.getElementById("input-field");
+        var extra_inputvar = `<form>
+          <div class="key-token">
+            <label for="pixel-id">
+              <p style="font-size: 12px;">KEY</p>
+            </label>
+            <div class="key">
+              <div>
+                <input type="text" id="pixel" name="fname" onblur="checkEmpty()">
+              </div>
+              <button id="show"><i class="fa">&#xf1c0;</i></button>
+            </div>
+          </div>
+          <div>
+            <label for="token">
+              <p style="font-size: 12px;">VALUE</p>
+            </label>
+            <div class="key">
+              <div>
+                <input type="text" id="token" name="lname" onblur="checkEmpty2()">
+              </div>
+              <button id="secretshow"><i class="fa">&#xf1c0;</i></button>
+            </div>
+          </div>
+        </form>`
+
+        function addInput() {
+          var input = document.createElement("input");
+          input.type = "text";
+          document.getElementById("container").appendChild(input);
+          input.className="pixel";
+          // var secretshow=document.getElementById("show")
+          // document.getElementById("container").appendChild(secretshow);
+          
+          var input1 = document.createElement("input");
+          input1.type = "text";
+          document.getElementById("container").appendChild(input1);
+          input1.className="pixel";
+          // var secretshow1=document.getElementById("secretshow")
+          // document.getElementById("container").appendChild(secretshow1);
+          var newElem = document.createElement("BR");
+          document.getElementById("container").appendChild(newElem);
+        }
+
+        function removeInput() {
+          var container = document.getElementById("container");
+          var inputs = container.getElementsByTagName("input");
+          container.removeChild(inputs[inputs.length - 1]);
+          // var secretshow=document.getElementById("show")
+          // container.removeChild(secretshow[secretshow.length - 1]);
+
+          var container = document.getElementById("container");
+          var inputs = container.getElementsByTagName("input");
+          container.removeChild(inputs[inputs.length - 1]);
+          // var secretshow1=document.getElementById("secretshow")
+          // container.removeChild(secretshow1[secretshow1.length - 1]);
+
+        }
+
+
+      </script>
+</body>
+
+</html>
